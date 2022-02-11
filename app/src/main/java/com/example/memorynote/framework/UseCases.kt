@@ -1,4 +1,4 @@
-package com.example.memorynote.framework.db
+package com.example.memorynote.framework
 
 import com.example.core.usecase.AddNote
 import com.example.core.usecase.GetAllNotes
