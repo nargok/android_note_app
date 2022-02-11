@@ -1,21 +1,18 @@
 package com.example.memorynote.presentation
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.memorynote.R
+import com.example.memorynote.framework.ListViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +20,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ListFragment : Fragment() {
+
+    private val notesListAdapter = NotesListAdapter(arrayListOf())
+    private lateinit var viewModel: ListViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +35,30 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // apply -> objectに変更を加えて返す
+        notesListView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = notesListAdapter
+        }
+
         addNote.setOnClickListener { goToNoteDetails() }
+
+        viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
+
+        observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getNotes()
+    }
+
+    private fun observeViewModel() {
+        viewModel.notes.observe(this, Observer { noteList ->
+            loadingView.visibility = View.GONE // Spinnerをoffにする
+            notesListView.visibility = View.VISIBLE
+            notesListAdapter.updateNotes(noteList.sortedByDescending { it.updateTime })
+        })
     }
 
     private fun goToNoteDetails(id: Long = 0L) {
