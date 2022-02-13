@@ -62,7 +62,7 @@ class ListFragment : Fragment(), ListAction {
     }
 
     private fun goToNoteDetails(id: Long = 0L) {
-        val action: NavDirections = ListFragmentDirections.actionGoToNote()
+        val action: NavDirections = ListFragmentDirections.actionGoToNote(id)
         // FIXME viewBindingでの実現形式に変える
         Navigation.findNavController(notesListView).navigate(action)
     }
