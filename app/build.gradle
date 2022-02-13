@@ -44,6 +44,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
@@ -73,6 +77,9 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+    implementation 'javax.inject:javax.inject:1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
