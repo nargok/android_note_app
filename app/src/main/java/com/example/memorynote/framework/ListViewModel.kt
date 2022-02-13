@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.core.data.Note
 import com.example.core.repository.NoteRepository
-import com.example.core.usecase.AddNote
-import com.example.core.usecase.GetAllNotes
-import com.example.core.usecase.GetNote
-import com.example.core.usecase.RemoveNote
+import com.example.core.usecase.*
 import com.example.memorynote.framework.di.ApplicationModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +22,8 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         AddNote(repository),
         GetAllNotes(repository),
         GetNote(repository),
-        RemoveNote(repository)
+        RemoveNote(repository),
+        GetWordCount(),
     )
 
     // FIXME use DI
@@ -44,6 +42,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     fun getNotes() {
         coroutineScope.launch {
             val noteList = useCases.getAllNotes()
+            noteList.forEach { it.wordCount = useCases.getWordCount(it) }
             notes.postValue(noteList)
         }
     }

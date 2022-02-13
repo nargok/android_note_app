@@ -5,10 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.core.data.Note
 import com.example.core.repository.NoteRepository
-import com.example.core.usecase.AddNote
-import com.example.core.usecase.GetAllNotes
-import com.example.core.usecase.GetNote
-import com.example.core.usecase.RemoveNote
+import com.example.core.usecase.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +20,8 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         AddNote(repository),
         GetAllNotes(repository),
         GetNote(repository),
-        RemoveNote(repository)
+        RemoveNote(repository),
+        GetWordCount()
     )
 
     // FIXME use DI
