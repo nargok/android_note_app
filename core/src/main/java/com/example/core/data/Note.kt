@@ -6,4 +6,5 @@ data class Note(
     var creationTime: Long,
     var updateTime: Long,
     var id: Long = 0,
+    var wordCount: Int,
 )
