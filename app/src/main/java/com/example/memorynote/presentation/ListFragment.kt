@@ -19,9 +19,9 @@ import kotlinx.android.synthetic.main.fragment_list.*
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), ListAction {
 
-    private val notesListAdapter = NotesListAdapter(arrayListOf())
+    private val notesListAdapter = NotesListAdapter(arrayListOf(), this)
     private lateinit var viewModel: ListViewModel
 
     override fun onCreateView(
@@ -65,5 +65,9 @@ class ListFragment : Fragment() {
         val action: NavDirections = ListFragmentDirections.actionGoToNote()
         // FIXME viewBindingでの実現形式に変える
         Navigation.findNavController(notesListView).navigate(action)
+    }
+
+    override fun onClick(id: Long) {
+        goToNoteDetails(id)
     }
 }
